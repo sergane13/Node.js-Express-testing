@@ -1,25 +1,37 @@
 const http = require('http');
 const fs = require('fs')
+const url = require('url')
 
-const port = 3000;
+//const menu = require('./testing');
+const aur = require('./testing');
 
-const server = http.createServer( (req, res) => 
-{
-    res.writeHead(200, {'Content-Type': 'text/html'})
-    fs.readFile('index.html', (error, data) =>
+const port = 8080;
+
+const server = http.createServer( (request, response) => 
+{                 
+    
+    let pathname = url.parse(request.url).pathname;
+    //console.log(pathname);
+
+    response.writeHead(200);
+
+    setTimeout(()=>
     {
-        if(error)
-        {
-            res.writeHead(404)
-            res.write('Error: file not found')
-        }
-        else
-        {
-            res.write(data)
-        }
+        aur();
+    }, 2000)
 
-        res.end()
-    })
+    if(pathname == "/") {
+        html = fs.readFileSync("index.html", "utf8");
+        response.write(html);
+    } else if (pathname == "/testing.js") {
+        script = fs.readFileSync("testing.js", "utf8");
+        response.write(script);
+    } else if (pathname == "/secondary.html"){
+        html2 = fs.readFileSync("secondary.html", "utf8");
+        response.write(html2);
+    }
+
+    response.end(); 
 })
 
 
@@ -33,5 +45,4 @@ server.listen(port, (error) =>
     {
         console.log("Listening on port " + port);
     }
-    
 })
