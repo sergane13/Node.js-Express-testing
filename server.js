@@ -10,6 +10,15 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(express.static(__dirname));
 
+// expects json format as specified in header
+app.use(express.json())
+
+app.post('/yolo', (req, res) =>
+{
+    console.log(req.body);
+    res.sendStatus(200)
+})
+
 // get request
 app.get('/', (req, res) => 
 {
@@ -17,16 +26,10 @@ app.get('/', (req, res) =>
     res.render("index", {value : "pending"})
 })
 
-app.get('/values', (req, res) => 
-{
-    res.json({ "value" : "something"})
-})
-
 // post request
 app.post('/', (req, res) => 
 {
-    console.log(req);
-    console.log(res);
+    console.log(req.body);
     let valueTx = req.body.amount;
 
     if(valueTx >= 1)
@@ -60,13 +63,17 @@ app.post('/', (req, res) =>
 })
 
 
+app.get('/values', (req, res) => 
+{
+    res.json({ "value" : "something"})
+})
+
 
 // import routers
 const userRouter = require("./routes/users.js")
 
 // use routers
 app.use('/users', userRouter)
-
 
 
 
