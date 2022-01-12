@@ -23,7 +23,7 @@ document.getElementById("salut").onclick = async () =>
     
 
     
-    // ---- POST xhr----
+    //---- POST xhr----
 
     // xhr.open("POST", "http://localhost:8080/yolo", true);  
 

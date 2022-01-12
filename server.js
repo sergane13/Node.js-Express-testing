@@ -3,24 +3,50 @@ const bodyParser = require("body-parser")
 
 const blockchain = require("./js/blockchain.js")
 
+const data =
+[ 
+    {
+        ein : 1,
+        zwei : 2,
+        drei : 3,
+        fir : 4,
+        funf : 5,
+    },
+    {
+        ein : 10,
+        zwei : 20,
+        drei : 30,
+        fir : 40,
+        funf : 50,
+    }
+]
+
 // default stuff
 const app = express()
 app.set('view engine', 'ejs')
 
 app.use(bodyParser.urlencoded({ extended: true}))
+
+// static --> load it once to client so it will not change
+// __dirname --> global variable that is the path of the current folder
 app.use(express.static(__dirname));
 
 // expects json format as specified in header
 app.use(express.json())
 
-app.post('/yolo', (req, res) =>
+
+// #### main page ####
+
+// this is a middleware
+// req --> midleware(req,res,next) --> res
+function stuffToDo(req, res, next)
 {
-    console.log(req.body);
-    res.sendStatus(200)
-})
+    console.log(__dirname);
+    next()
+}
 
 // get request
-app.get('/', (req, res) => 
+app.get('/', stuffToDo, (req, res) => 
 {
     // send html file as response with vars
     res.render("index", {value : "pending"})
@@ -29,11 +55,12 @@ app.get('/', (req, res) =>
 // post request
 app.post('/', (req, res) => 
 {
-    console.log(req.body);
     let valueTx = req.body.amount;
 
     if(valueTx >= 1)
     {   
+        res.sendStatus(200)
+
         blockchain(valueTx)
         .then(
             (value) => 
@@ -62,10 +89,37 @@ app.post('/', (req, res) =>
  
 })
 
+app.get('/yolo/:value', (req, res) => 
+{   
+    // req.param --> the parameters from :value
+    console.log(req.params);
+    const returnvalue = data.find((dataSmall) => dataSmall.ein === 10)
+    // send json file
+    res.json(returnvalue)
+})
 
-app.get('/values', (req, res) => 
+app.get('/api/v1/query', (req, res) => 
+{   
+    // object of type
+    // { key: value} ?key:value&key:value&key:value ... 
+    console.log(req.query);
+    res.send("hi");
+})
+
+// post 
+app.post('/yolo', (req, res) =>
 {
-    res.json({ "value" : "something"})
+    console.log(req.body);
+    res.sendStatus(200)
+})
+
+
+// indiferent of request type retrieve this
+// '*' is for any wish path
+app.all('*', (req, res) => 
+{
+    res.status(404)
+    res.send("NO PAGE FOUND")
 })
 
 

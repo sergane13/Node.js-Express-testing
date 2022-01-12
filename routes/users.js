@@ -3,6 +3,7 @@ const express = require("express")
 // create the router
 const router = express.Router()
 
+
 // /router
 router.get('/', (req, res) => 
 {
@@ -26,6 +27,7 @@ router.get("/:id", (req, res) =>
 {
     res.send(req.params.id)
 })
+
 
 // export the router
 module.exports = router;
