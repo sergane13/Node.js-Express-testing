@@ -3,9 +3,11 @@ const utils = require("ethers").utils;
 
 
 async function executeTransaction(amount)
-{
+{   
+  // contract address
     const address = "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0";
-
+    
+    // secret key of the first address on hardhat network
     const SECRET_KEY = "ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 
     let provider = new ethers.providers.JsonRpcProvider()

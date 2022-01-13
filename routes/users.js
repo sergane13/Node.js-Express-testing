@@ -4,30 +4,29 @@ const express = require("express")
 const router = express.Router()
 
 
-// /router
-router.get('/', (req, res) => 
+// creating a route for all request types af '/'
+router.route('/')
+.get((req, res) => 
 {
-    res.send('saf')
+    res.send('Hi dude')
 })
+.post((req, res) => 
+{
+    res.send('aur')
+})
+
 
 // /router/new
 router.get('/new', (req, res) => 
 {
-    res.send('saasdf')
-})
-
-// create a post request 
-router.post('/', (req, res) => 
-{
-    res.send('aur')
+    res.send('Hi new dude')
 })
 
 // :id 
 router.get("/:id", (req, res) => 
 {
-    res.send(req.params.id)
+    res.send("Hi in paradise " + req.params.id)
 })
-
 
 // export the router
 module.exports = router;
