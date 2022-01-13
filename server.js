@@ -35,6 +35,7 @@ app.use(express.static(__dirname));
 app.use(express.json())
 
 
+
 // #### main page ####
 
 // this is a middleware
@@ -45,8 +46,10 @@ function stuffToDo(req, res, next)
     next()
 }
 
+app.use('/', stuffToDo);
+
 // get request
-app.get('/', stuffToDo, (req, res) => 
+app.get('/', (req, res) => 
 {
     // send html file as response with vars
     res.render("index", {value : "pending"})
